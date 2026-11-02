@@ -59,7 +59,7 @@ jobs:
       - name: Install Wails CLI
         run: go install github.com/wailsapp/wails/v3/cmd/wails3@${{ env.WAILS_VERSION }}
 
-      - name: Package (universal .app: Apple Silicon + Intel)
+      - name: Package universal .app (Apple Silicon and Intel)
         run: wails3 task darwin:package:universal
 
       # upload-artifact drops file permissions, so zip the bundle first.
