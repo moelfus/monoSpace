@@ -1,0 +1,91 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  WAILS_VERSION: v3.0.0-alpha2.117
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Wails CLI
+        run: go install github.com/wailsapp/wails/v3/cmd/wails3@${{ env.WAILS_VERSION }}
+
+      - name: Install NSIS
+        run: choco install nsis -y --no-progress
+
+      - name: Package (NSIS installer)
+        shell: bash
+        run: |
+          export PATH="$PATH:/c/Program Files (x86)/NSIS"
+          wails3 task package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: monoSpace-windows
+          path: |
+            bin/monospace.exe
+            bin/*-installer.exe
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Wails CLI
+        run: go install github.com/wailsapp/wails/v3/cmd/wails3@${{ env.WAILS_VERSION }}
+
+      - name: Package (universal .app: Apple Silicon + Intel)
+        run: wails3 task darwin:package:universal
+
+      # upload-artifact drops file permissions, so zip the bundle first.
+      - name: Zip app bundle
+        run: ditto -c -k --keepParent bin/monospace.app monoSpace-macos.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: monoSpace-macos
+          path: monoSpace-macos.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [windows, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            dist/monoSpace-windows/*-installer.exe
+            dist/monoSpace-windows/monospace.exe
+            dist/monoSpace-macos/monoSpace-macos.zip

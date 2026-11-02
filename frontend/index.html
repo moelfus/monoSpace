@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>monoSpace</title>
+  </head>
+  <body>
+    <div id="titlebar">
+      <span id="title"></span>
+      <div id="controls">
+        <button id="btn-min" title="Minimize" tabindex="-1">&#8211;</button>
+        <button id="btn-max" title="Maximize" tabindex="-1">&#9633;</button>
+        <button id="btn-close" title="Close" tabindex="-1">&#10005;</button>
+      </div>
+    </div>
+    <div id="app">
+      <aside id="sidebar" hidden></aside>
+      <div id="editor"></div>
+    </div>
+    <div id="help" tabindex="-1" hidden></div>
+    <div id="switcher" hidden>
+      <div id="switcher-box">
+        <input id="switcher-input" placeholder="Go to file…" spellcheck="false" autocomplete="off" />
+        <ul id="switcher-list"></ul>
+      </div>
+    </div>
+    <div id="status">
+      <span id="mode"></span>
+      <span id="file"></span>
+      <span id="lang" title="Spell-check language (:lang)"></span>
+      <span id="theme" title="Ctrl+Shift+D or :theme"></span>
+      <span id="stats"></span>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

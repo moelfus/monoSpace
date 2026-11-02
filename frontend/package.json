@@ -1,0 +1,30 @@
+{
+  "name": "monospace-frontend",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build:dev": "tsc && vite build --minify false --mode development",
+    "build": "tsc && vite build --mode production",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/lang-markdown": "^6.3.0",
+    "@codemirror/language": "^6.11.0",
+    "@codemirror/state": "^6.5.0",
+    "@codemirror/view": "^6.36.0",
+    "@lezer/highlight": "^1.2.0",
+    "@replit/codemirror-vim": "^6.3.0",
+    "@wailsio/runtime": "latest",
+    "dictionary-de": "^3.0.0",
+    "dictionary-en": "^4.0.0",
+    "nspell": "^2.1.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^8.0.5"
+  }
+}

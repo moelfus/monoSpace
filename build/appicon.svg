@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>monoSpace</title>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#4fd1a5" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#4fd1a5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cursor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6fe3bb"/>
+      <stop offset="1" stop-color="#4fd1a5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- tile -->
+  <rect x="0" y="0" width="1024" height="1024" rx="224" fill="#181816"/>
+  <rect x="12" y="12" width="1000" height="1000" rx="212" fill="none" stroke="#4fd1a5" stroke-opacity="0.18" stroke-width="4"/>
+
+  <!-- soft glow + band behind the focused line -->
+  <ellipse cx="512" cy="512" rx="470" ry="260" fill="url(#glow)"/>
+  <rect x="112" y="452" width="800" height="120" rx="30" fill="#4fd1a5" fill-opacity="0.10"/>
+
+  <!-- text lines: character unit = 48px, word gap = 1 unit, line pitch = 96px -->
+  <g transform="translate(-24 0)" fill="#4fd1a5">
+    <!-- row 1 (furthest, faintest) -->
+    <g fill-opacity="0.12">
+      <rect x="176" y="206" width="240" height="36" rx="18"/>
+      <rect x="464" y="206" width="144" height="36" rx="18"/>
+      <rect x="656" y="206" width="192" height="36" rx="18"/>
+    </g>
+    <!-- row 2 -->
+    <g fill-opacity="0.2">
+      <rect x="176" y="302" width="144" height="36" rx="18"/>
+      <rect x="368" y="302" width="288" height="36" rx="18"/>
+      <rect x="704" y="302" width="144" height="36" rx="18"/>
+    </g>
+    <!-- row 3 -->
+    <g fill-opacity="0.36">
+      <rect x="176" y="398" width="288" height="36" rx="18"/>
+      <rect x="512" y="398" width="192" height="36" rx="18"/>
+      <rect x="752" y="398" width="96" height="36" rx="18"/>
+    </g>
+
+    <!-- row 4: the focused line -->
+    <g>
+      <rect x="176" y="494" width="192" height="36" rx="18"/>
+      <rect x="416" y="494" width="240" height="36" rx="18"/>
+      <rect x="704" y="494" width="96" height="36" rx="18"/>
+    </g>
+    <!-- cursor at the end of the focused line (one character cell wide) -->
+    <rect x="848" y="470" width="48" height="84" rx="10" fill="url(#cursor)"/>
+
+    <!-- row 5 -->
+    <g fill-opacity="0.36">
+      <rect x="176" y="590" width="240" height="36" rx="18"/>
+      <rect x="464" y="590" width="144" height="36" rx="18"/>
+      <rect x="656" y="590" width="192" height="36" rx="18"/>
+    </g>
+    <!-- row 6 -->
+    <g fill-opacity="0.2">
+      <rect x="176" y="686" width="144" height="36" rx="18"/>
+      <rect x="368" y="686" width="192" height="36" rx="18"/>
+      <rect x="608" y="686" width="240" height="36" rx="18"/>
+    </g>
+    <!-- row 7 (furthest, faintest) -->
+    <g fill-opacity="0.12">
+      <rect x="176" y="782" width="288" height="36" rx="18"/>
+      <rect x="512" y="782" width="96" height="36" rx="18"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+{
+	"fixed": {
+		"file_version": "0.0.1"
+	},
+	"info": {
+		"0000": {
+			"ProductVersion": "0.0.1",
+			"CompanyName": "moelfus",
+			"FileDescription": "A distraction-free Markdown writer with vim motions",
+			"LegalCopyright": "(c) 2026, moelfus",
+			"ProductName": "monoSpace",
+			"Comments": "Free software under GPL-3.0-or-later"
+		}
+	}
+}

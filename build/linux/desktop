@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=monoSpace
+Comment=A distraction-free Markdown writer with vim motions
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/monospace %u
+Terminal=false
+Type=Application
+Icon=monospace
+Categories=Utility;
+StartupWMClass=monospace
+
+ 

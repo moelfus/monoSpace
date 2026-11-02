@@ -1,0 +1,474 @@
+:root {
+  --bg: #fbfaf7;
+  --fg: #2b2b28;
+  --dim: #2b2b28;
+  --dim-opacity: 0.28;
+  --muted: #9a978f;
+  --accent: #0f8f6f;
+  --selection: #cfe8df;
+  --cursor: #0f8f6f;
+  --font: "iA Writer Mono S", "iA Writer Mono", "Cascadia Mono", "Consolas", monospace;
+  color-scheme: light;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Dark: automatic (follows Windows) unless light is forced, or forced explicitly. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #181816;
+    --fg: #d8d5cc;
+    --dim: #d8d5cc;
+    --muted: #8a877e;
+    --accent: #4fd1a5;
+    --selection: #2c4a40;
+    --cursor: #7cf0c8;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #181816;
+  --fg: #d8d5cc;
+  --dim: #d8d5cc;
+  --muted: #8a877e;
+  --accent: #4fd1a5;
+  --selection: #2c4a40;
+  --cursor: #7cf0c8;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  height: 100%;
+}
+
+#editor {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+/* Library sidebar */
+#sidebar {
+  flex: 0 0 260px;
+  height: 100%;
+  overflow: auto;
+  padding: 40px 0 36px;
+  border-right: 1px solid color-mix(in srgb, var(--muted) 30%, transparent);
+  font-size: 13px;
+  line-height: 1.5;
+  user-select: none;
+}
+
+#sidebar[hidden],
+#switcher[hidden] {
+  display: none;
+}
+
+.lib-header {
+  padding: 4px 16px 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lib-hint {
+  padding: 8px 16px;
+  color: var(--muted);
+}
+
+.tree,
+.tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree ul {
+  padding-left: 14px;
+}
+
+.tree .row {
+  padding: 2px 16px 2px 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tree .row.dir::before {
+  content: "▸ ";
+}
+
+.tree .row.dir.open::before {
+  content: "▾ ";
+}
+
+.tree .row.file {
+  padding-left: 26px;
+}
+
+.tree .row:hover {
+  color: var(--fg);
+}
+
+.tree .row.active {
+  color: var(--fg);
+  background: var(--selection);
+}
+
+.tree .row.dirty::after {
+  content: " •";
+  color: var(--accent);
+}
+
+/* Help page */
+#help {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: auto;
+  padding: 56px 24px 48px;
+  background: var(--bg);
+  outline: none;
+}
+
+#help[hidden],
+#help-box:empty {
+  display: none;
+}
+
+#help-box {
+  max-width: 44em;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#help-box h1 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+#help-box h2 {
+  margin: 28px 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+#help-box dl {
+  display: grid;
+  grid-template-columns: 24em 1fr;
+  gap: 4px 24px;
+  margin: 0;
+}
+
+#help-box dt {
+  color: var(--fg);
+  font-weight: 700;
+}
+
+#help-box dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Quick switcher */
+#switcher {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 14vh;
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
+}
+
+#switcher-box {
+  width: min(560px, 90vw);
+  background: var(--bg);
+  border: 1px solid var(--muted);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 0.25);
+}
+
+#switcher-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted) 40%, transparent);
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+}
+
+#switcher-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 50vh;
+  overflow: auto;
+  font-size: 13px;
+}
+
+#switcher-list li {
+  padding: 5px 14px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+#switcher-list li.selected {
+  color: var(--fg);
+  background: var(--selection);
+}
+
+#editor .cm-editor {
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  outline: none;
+}
+
+.cm-scroller {
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 1.75;
+  padding: 0 24px;
+}
+
+.cm-content {
+  width: 100%;
+  max-width: 44em;
+  margin: 0 auto;
+  padding: 12vh 0;
+  caret-color: var(--cursor);
+}
+
+body.typewriter .cm-content {
+  padding: 46vh 0;
+}
+
+.cm-line {
+  padding: 0;
+  transition: opacity 0.25s ease;
+}
+
+body.focus .cm-line.cm-dim {
+  opacity: var(--dim-opacity);
+}
+
+/* CodeMirror's base theme scopes these under a generated class, so match its specificity. */
+.cm-editor .cm-cursor,
+.cm-editor .cm-dropCursor {
+  border-left: 2px solid var(--cursor) !important;
+}
+
+.cm-editor .cm-fat-cursor {
+  background: var(--cursor) !important;
+  color: var(--bg) !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.cm-editor:not(.cm-focused) .cm-fat-cursor {
+  background: transparent !important;
+  outline: 1px solid var(--cursor) !important;
+}
+
+.cm-selectionBackground,
+.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {
+  background: var(--selection) !important;
+}
+
+.cm-activeLine {
+  background: transparent;
+}
+
+.cm-placeholder {
+  color: var(--muted);
+}
+
+/* Markdown */
+.md-heading {
+  font-weight: 700;
+}
+.md-marker {
+  color: var(--muted);
+}
+.md-link {
+  color: var(--accent);
+}
+.md-quote {
+  color: var(--muted);
+  font-style: italic;
+}
+.md-code {
+  color: var(--accent);
+}
+
+/* Spell checking */
+:root {
+  --misspelled: #d1453b;
+}
+
+:root[data-theme="dark"] {
+  --misspelled: #ff7b72;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --misspelled: #ff7b72;
+  }
+}
+
+.cm-misspelled {
+  text-decoration: underline wavy var(--misspelled);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.spell-menu {
+  position: fixed;
+  z-index: 40;
+  min-width: 14em;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--muted);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+  font-family: var(--font);
+  font-size: 13px;
+  white-space: pre;
+}
+
+.spell-menu li {
+  padding: 3px 14px;
+  cursor: pointer;
+}
+
+.spell-menu li.selected,
+.spell-menu li:hover {
+  background: var(--selection);
+}
+
+/* Vim ex-command prompt */
+.cm-vim-panel {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  padding: 4px 12px;
+  border-top: 1px solid var(--muted);
+}
+.cm-vim-panel input {
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font);
+  border: none;
+  outline: none;
+}
+
+/* Frameless title bar: invisible until the mouse reaches the top edge */
+#titlebar {
+  --wails-draggable: drag;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 16px;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--bg);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  user-select: none;
+}
+
+#titlebar:hover {
+  opacity: 1;
+}
+
+#controls {
+  --wails-draggable: no-drag;
+  display: flex;
+  height: 100%;
+}
+
+#controls button {
+  width: 46px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: default;
+}
+
+#controls button:hover {
+  background: var(--selection);
+  color: var(--fg);
+}
+
+#controls #btn-close:hover {
+  background: #c42b1c;
+  color: #fff;
+}
+
+/* Status bar */
+#status {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 16px;
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.55;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+body.typing #status {
+  opacity: 0;
+}
+
+#file {
+  flex: 1;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
